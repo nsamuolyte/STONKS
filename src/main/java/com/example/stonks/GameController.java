@@ -6,6 +6,7 @@ import javafx.animation.Animation;
 import javafx.beans.binding.Bindings;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
@@ -22,7 +23,6 @@ public class GameController {
     @FXML
     private Text akcijosTXT;
 
-    @FXML
     private PLAYER player;
 
     @FXML
@@ -89,5 +89,24 @@ public class GameController {
 
     public void setPlayerName(String name) {
         playerNameLabel.setText("Žaidėjas: " + name);
+    }
+
+    @FXML
+    public void stopBTon(ActionEvent actionEvent) {
+        timeline.stop();
+    }
+
+    @FXML
+    public void playBTon(ActionEvent actionEvent) {
+        timeline.play();
+    }
+
+    public void buyBTon(ActionEvent actionEvent) {
+    }
+
+    public void sellBTon(ActionEvent actionEvent) {
+    }
+
+    public void restartBTon(ActionEvent actionEvent) {
     }
 }
