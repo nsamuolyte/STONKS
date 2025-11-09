@@ -1,7 +1,9 @@
 package com.example.stonks;
 
 import com.example.stonks.model.STOCK;
+import com.example.stonks.model.PLAYER;
 import javafx.animation.Animation;
+import javafx.beans.binding.Bindings;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.fxml.FXML;
@@ -10,8 +12,15 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.util.Duration;
+import javafx.scene.text.Text;
 
 public class GameController {
+
+    @FXML
+    private Text saskaitaTXT;
+
+    @FXML
+    private PLAYER player;
 
     @FXML
     private Label playerNameLabel;
@@ -36,6 +45,9 @@ public class GameController {
 
     public void initialize()
     {
+        String vardas = playerNameLabel.getText();
+        player = new PLAYER(vardas, 1000.0);
+
         priceChart.getData().add(series);
         priceChart.setLegendVisible(false);
         priceChart.getData().add(series);
@@ -45,6 +57,10 @@ public class GameController {
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
         updateChart();
+
+        saskaitaTXT.textProperty().bind(
+                Bindings.format("%.2f €", player.balance)
+        );
     }
 
     private void updateChart() {

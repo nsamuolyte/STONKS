@@ -30,7 +30,7 @@ public class PLAYER
     }
 
     private String name;
-    private DoubleProperty balance; //kad automatiskai atsinaujintu
+    public DoubleProperty balance; //kad automatiskai atsinaujintu
     private int ownedStocks;
 
     public PLAYER (String name, double balance)
