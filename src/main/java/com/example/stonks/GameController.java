@@ -28,6 +28,7 @@ public class GameController {
     @FXML
     private NumberAxis yAxis;
 
+    public int numb = 1; //greicio skaicius
     private XYChart.Series<Number, Number> series = new XYChart.Series<>();
     private STOCK stock = new STOCK("STONKS", 100.0);
     private int time = 0;
@@ -36,16 +37,14 @@ public class GameController {
     public void initialize()
     {
         priceChart.getData().add(series);
-        Timeline timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateChart()));
-        timeline.setCycleCount(Animation.INDEFINITE);
-        timeline.play();
         priceChart.setLegendVisible(false);
         priceChart.getData().add(series);
 
         // Atnaujinti kas 1 sekundę
-        timeline = new Timeline(new KeyFrame(Duration.seconds(1), e -> updateChart()));
+        timeline = new Timeline(new KeyFrame(Duration.seconds(numb), e -> updateChart())); // kitimo greitis
         timeline.setCycleCount(Timeline.INDEFINITE);
         timeline.play();
+        updateChart();
     }
 
     private void updateChart() {

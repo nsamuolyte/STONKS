@@ -1,5 +1,8 @@
 package com.example.stonks.model;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
 public class PLAYER
 {
     public String getName() {
@@ -11,11 +14,11 @@ public class PLAYER
     }
 
     public double getBalance() {
-        return balance;
+        return balance.get();
     }
 
     public void setBalance(double balance) {
-        this.balance = balance;
+        this.balance.set(balance);
     }
 
     public int getOwnedStocks() {
@@ -27,21 +30,21 @@ public class PLAYER
     }
 
     private String name;
-    private double balance;
+    private DoubleProperty balance; //kad automatiskai atsinaujintu
     private int ownedStocks;
 
     public PLAYER (String name, double balance)
     {
         this.name = name;
-        this.balance = balance;
+        this.balance = new SimpleDoubleProperty(balance);
     }
 
     public boolean buyStock(STOCK stock, int amount, double feeRate)
     {
         double kaina = stock.getPrice();
-        if (kaina <= balance)
+        if (kaina <= getBalance())
         {
-            balance = balance - kaina;
+            setBalance(getBalance() - kaina * amount * (1 - feeRate));
             ownedStocks++;
             return true;
         }
@@ -53,7 +56,7 @@ public class PLAYER
         if (amount <= ownedStocks)
         {
             double income = stock.getPrice() * amount * (1 - feeRate);
-            balance = balance + income;
+            setBalance(getBalance() + income);
             ownedStocks = ownedStocks - amount;
             return true;
         }
@@ -62,7 +65,7 @@ public class PLAYER
 
     public double getPorfolio(STOCK stock)
     {
-        return ownedStocks * stock.getPrice() + balance;
+        return ownedStocks * stock.getPrice() + getBalance();
     }
 
 }
