@@ -20,6 +20,9 @@ public class GameController {
     private Text saskaitaTXT;
 
     @FXML
+    private Text akcijosTXT;
+
+    @FXML
     private PLAYER player;
 
     @FXML
@@ -60,6 +63,10 @@ public class GameController {
 
         saskaitaTXT.textProperty().bind(
                 Bindings.format("%.2f €", player.balance)
+        );
+
+        akcijosTXT.textProperty().bind(
+                Bindings.format("%d", player.ownedStocks)
         );
     }
 

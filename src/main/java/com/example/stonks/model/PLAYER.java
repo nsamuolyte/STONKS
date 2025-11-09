@@ -1,7 +1,9 @@
 package com.example.stonks.model;
 
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 
 public class PLAYER
 {
@@ -21,22 +23,21 @@ public class PLAYER
         this.balance.set(balance);
     }
 
-    public int getOwnedStocks() {
-        return ownedStocks;
-    }
+    public int getOwnedStocks() { return ownedStocks.get(); }
 
     public void setOwnedStocks(int ownedStocks) {
-        this.ownedStocks = ownedStocks;
+        this.ownedStocks.set(ownedStocks);
     }
 
     private String name;
     public DoubleProperty balance; //kad automatiskai atsinaujintu
-    private int ownedStocks;
+    public IntegerProperty ownedStocks;
 
     public PLAYER (String name, double balance)
     {
         this.name = name;
         this.balance = new SimpleDoubleProperty(balance);
+        this.ownedStocks = new SimpleIntegerProperty(0);
     }
 
     public boolean buyStock(STOCK stock, int amount, double feeRate)
@@ -45,7 +46,7 @@ public class PLAYER
         if (kaina <= getBalance())
         {
             setBalance(getBalance() - kaina * amount * (1 - feeRate));
-            ownedStocks++;
+            setOwnedStocks(getOwnedStocks() + amount);
             return true;
         }
         return false;
@@ -53,11 +54,11 @@ public class PLAYER
 
     public boolean sellStock(STOCK stock, int amount, double feeRate)
     {
-        if (amount <= ownedStocks)
+        if (amount <= getOwnedStocks())
         {
             double income = stock.getPrice() * amount * (1 - feeRate);
             setBalance(getBalance() + income);
-            ownedStocks = ownedStocks - amount;
+            setOwnedStocks(getOwnedStocks() - amount);
             return true;
         }
         return false;
@@ -65,7 +66,7 @@ public class PLAYER
 
     public double getPorfolio(STOCK stock)
     {
-        return ownedStocks * stock.getPrice() + getBalance();
+        return getOwnedStocks() * stock.getPrice() + getBalance();
     }
 
 }
