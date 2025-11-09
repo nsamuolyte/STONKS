@@ -23,14 +23,14 @@ public class HelloController
             vardoField.setPromptText("Zaidejo vardo laukas negali likti tuscias!");
             return;
         }
-
         try {
             // Užkraunam naują sceną (žaidimo langą)
             FXMLLoader loader = new FXMLLoader(getClass().getResource("birza-view.fxml"));
             Parent root = loader.load();
 
             // Pasiimam naujo lango kontrolerį
-            GameController gameController = loader.getController();
+            GameController gameController;
+            gameController = loader.getController();
             gameController.setPlayerName(vardas); // <- perduodame žaidėjo vardą
 
             // Pakeičiam sceną

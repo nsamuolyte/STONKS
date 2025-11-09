@@ -53,7 +53,8 @@ public class testPLAYER {
     }
 
     @Test
-    void testSellStockSuccess() {
+    void testSellStockSuccess()
+    {
         player.setOwnedStocks(2);
         boolean result = player.sellStock(stock, 1, 0.1); // 10% fee
 
@@ -64,7 +65,8 @@ public class testPLAYER {
     }
 
     @Test
-    void testSellStockFailsWhenNotEnoughOwned() {
+    void testSellStockFailsWhenNotEnoughOwned()
+    {
         player.setOwnedStocks(0);
         boolean result = player.sellStock(stock, 1, 0.05);
 
@@ -74,7 +76,8 @@ public class testPLAYER {
     }
 
     @Test
-    void testGetPortfolio() {
+    void testGetPortfolio()
+    {
         player.setOwnedStocks(2);
         stock = new STOCK("AAPL", 150.0);
         double portfolioValue = player.getPorfolio(stock);
