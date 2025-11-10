@@ -8,14 +8,22 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.text.Text;
+
+import java.io.IOException;
+import java.util.Optional;
 
 public class GameController {
 
@@ -120,47 +128,57 @@ public class GameController {
     }
 
     @FXML
-    public void buyBTon(ActionEvent actionEvent) {
+    public void buyBTon(ActionEvent event) {
         timeline.pause();
-        // Sukuriam įvedimo langelį
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Pirkti akcijas");
         dialog.setHeaderText("Įveskite, kiek akcijų norite nusipirkti:");
         dialog.setContentText("Kiekis:");
 
-        // Rodo langelį ir laukia vartotojo įvesties
-        dialog.showAndWait().ifPresent(input -> {
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(input -> {
             try {
                 int kiekis = Integer.parseInt(input);
-                double feeRate = 0.01; // 1% mokestis
-                boolean pavyko = player.buyStock(stock, kiekis, feeRate);
-            }catch (NumberFormatException e){};
+                boolean success = player.buyStock(stock, kiekis, 0.02);
+
+                if (!success) {
+                    showBankrotasDialog(); // neturi pinigų → parodyti bankrotą
+                } else {
+                    checkForBankruptcy(); // jei visgi minusas – irgi parodyti
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Neteisingas skaičius!");
+            }
         });
         timeline.play();
     }
 
-
     @FXML
-    public void sellBTon(ActionEvent actionEvent) {
+    public void sellBTon(ActionEvent event) {
         timeline.pause();
-
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle("Parduoti akcijas");
         dialog.setHeaderText("Įveskite, kiek akcijų norite parduoti:");
         dialog.setContentText("Kiekis:");
 
-        dialog.showAndWait().ifPresent(input -> {
+        Optional<String> result = dialog.showAndWait();
+        result.ifPresent(input -> {
             try {
                 int kiekis = Integer.parseInt(input);
-                if (kiekis <= 0) return;
-                double feeRate = 0.01;
-                boolean pavyko = player.sellStock(stock, kiekis, feeRate);
+                boolean success = player.sellStock(stock, kiekis, 0.02);
 
-            } catch (NumberFormatException e) {}
+                if (!success) {
+                    showBankrotasDialog(); // neturi tiek akcijų → parodyti bankrotą
+                } else {
+                    checkForBankruptcy();
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Neteisingas skaičius!");
+            }
         });
-
         timeline.play();
     }
+
 
 
     @FXML
@@ -177,4 +195,55 @@ public class GameController {
 
         timeline.play();
     }
+
+
+    @FXML
+    private void showBankrotasDialog() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("bankrotas-view.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) priceChart.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("💀 Bankrotas!");
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @FXML
+    private void exitToMainMenu() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("hello-view.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) priceChart.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Pradžios puslapis");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void checkForBankruptcy() {
+        if (player.getBalance() < 0 || player.getOwnedStocks() < 0) {
+            timeline.pause();
+            showBankrotasDialog();
+        }
+        System.out.println("👉 Tikrinam bankrotą... balansas = " + player.getBalance() + ", akcijos = " + player.getOwnedStocks());
+        if (player.getBalance() < 0 || player.getOwnedStocks() < 0) {
+            System.out.println("💀 Bankrotas suveikė!");
+            timeline.pause();
+            showBankrotasDialog();
+        }
+    }
+
+
+
+
+
 }

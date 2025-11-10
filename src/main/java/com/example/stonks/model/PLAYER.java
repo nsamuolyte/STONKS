@@ -40,29 +40,27 @@ public class PLAYER
         this.ownedStocks = new SimpleIntegerProperty(0);
     }
 
-    public boolean buyStock(STOCK stock, int amount, double feeRate)
-    {
-        double kaina = stock.getPrice();
-        if (kaina <= getBalance())
-        {
-            setBalance(getBalance() - kaina * amount * (1 - feeRate));
-            setOwnedStocks(getOwnedStocks() + amount);
-            return true;
-        }
-        return false;
+    public boolean buyStock(STOCK stock, int amount, double feeRate) {
+        double totalCost = stock.getPrice() * amount * (1 + feeRate);
+
+        if (amount <= 0) return false; // negali pirkti 0 ar mažiau
+        if (totalCost > getBalance()) return false; // neturi tiek pinigų
+
+        setBalance(getBalance() - totalCost);
+        setOwnedStocks(getOwnedStocks() + amount);
+        return true;
     }
 
-    public boolean sellStock(STOCK stock, int amount, double feeRate)
-    {
-        if (amount <= getOwnedStocks())
-        {
-            double income = stock.getPrice() * amount * (1 - feeRate);
-            setBalance(getBalance() + income);
-            setOwnedStocks(getOwnedStocks() - amount);
-            return true;
-        }
-        return false;
+    public boolean sellStock(STOCK stock, int amount, double feeRate) {
+        if (amount <= 0) return false;
+        if (amount > getOwnedStocks()) return false; // negali parduoti daugiau nei turi
+
+        double income = stock.getPrice() * amount * (1 - feeRate);
+        setBalance(getBalance() + income);
+        setOwnedStocks(getOwnedStocks() - amount);
+        return true;
     }
+
 
     public double getPorfolio(STOCK stock)
     {
