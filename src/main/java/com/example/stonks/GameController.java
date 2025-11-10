@@ -104,10 +104,6 @@ public class GameController {
         series.getData().add(new XYChart.Data<>(time, price));
         priceLabel.setText(String.format("Kaina: %.2f €", price));
 
-        // kad grafikas neužaugtų be galo
-        if (series.getData().size() > 50)
-            series.getData().remove(0);
-
         // atnaujinam ašis
         xAxis.setLowerBound(Math.max(0, time - 50));
         xAxis.setUpperBound(time + 1);
@@ -202,16 +198,27 @@ public class GameController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("bankrotas-view.fxml"));
             Parent root = loader.load();
+            BankrotasController controller = loader.getController();
 
-            Stage stage = (Stage) priceChart.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("💀 Bankrotas!");
-            stage.show();
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle("Bankrotas 💀");
+            dialogStage.initModality(Modality.APPLICATION_MODAL);
+            dialogStage.setScene(new Scene(root));
+            dialogStage.showAndWait();
+
+            if (controller.isRestartChosen()) {
+                // Jei žaidėjas pasirinko TĘSTI — tiesiog pratęsiam animaciją
+                timeline.play();
+            } else {
+                // Jei NE — grįžtam į pradžios langą
+                exitToMainMenu();
+            }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
 
 
     @FXML

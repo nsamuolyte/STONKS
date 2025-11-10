@@ -6,6 +6,8 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
@@ -63,10 +65,15 @@
 
             <Text layoutX="353.0" layoutY="50.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Turimos akcijos:" />
 
-            <Text fx:id="akcijosTXT" layoutX="457.0" layoutY="49.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" wrappingWidth="5.57099203943153" />
+            <Text fx:id="akcijosTXT" layoutX="457.0" layoutY="47.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" wrappingWidth="107.57099203943153" />
       
-             <Label fx:id="playerNameLabel" layoutX="11.0" layoutY="12.0" text="Žaidėjas: " />
-             <Label fx:id="priceLabel" layoutX="13.0" layoutY="32.0" text="Kaina:" />
+             <Label fx:id="playerNameLabel" layoutX="38.0" layoutY="13.0" text="Žaidėjas: " />
+             <Label fx:id="priceLabel" layoutX="40.0" layoutY="33.0" text="Kaina:" />
+            <ImageView fitHeight="99.0" fitWidth="68.0" layoutX="-20.0" layoutY="-8.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Stox%20man.png" />
+               </image>
+            </ImageView>
          </children>
       </AnchorPane>
    </children>

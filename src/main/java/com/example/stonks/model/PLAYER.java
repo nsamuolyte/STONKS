@@ -61,7 +61,6 @@ public class PLAYER
         return true;
     }
 
-
     public double getPorfolio(STOCK stock)
     {
         return getOwnedStocks() * stock.getPrice() + getBalance();
