@@ -13,6 +13,7 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.util.Duration;
 import javafx.scene.text.Text;
 
@@ -118,12 +119,62 @@ public class GameController {
         timeline.play();
     }
 
+    @FXML
     public void buyBTon(ActionEvent actionEvent) {
+        timeline.pause();
+        // Sukuriam įvedimo langelį
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Pirkti akcijas");
+        dialog.setHeaderText("Įveskite, kiek akcijų norite nusipirkti:");
+        dialog.setContentText("Kiekis:");
+
+        // Rodo langelį ir laukia vartotojo įvesties
+        dialog.showAndWait().ifPresent(input -> {
+            try {
+                int kiekis = Integer.parseInt(input);
+                double feeRate = 0.01; // 1% mokestis
+                boolean pavyko = player.buyStock(stock, kiekis, feeRate);
+            }catch (NumberFormatException e){};
+        });
+        timeline.play();
     }
 
+
+    @FXML
     public void sellBTon(ActionEvent actionEvent) {
+        timeline.pause();
+
+        TextInputDialog dialog = new TextInputDialog();
+        dialog.setTitle("Parduoti akcijas");
+        dialog.setHeaderText("Įveskite, kiek akcijų norite parduoti:");
+        dialog.setContentText("Kiekis:");
+
+        dialog.showAndWait().ifPresent(input -> {
+            try {
+                int kiekis = Integer.parseInt(input);
+                if (kiekis <= 0) return;
+                double feeRate = 0.01;
+                boolean pavyko = player.sellStock(stock, kiekis, feeRate);
+
+            } catch (NumberFormatException e) {}
+        });
+
+        timeline.play();
     }
 
+
+    @FXML
     public void restartBTon(ActionEvent actionEvent) {
+        timeline.pause();
+
+        player.setBalance(1000.0);
+        player.setOwnedStocks(0);
+
+        stock = new STOCK("STONKS", 100.0);
+
+
+        priceLabel.setText(String.format("Kaina: %.2f €", stock.getPrice()));
+
+        timeline.play();
     }
 }
