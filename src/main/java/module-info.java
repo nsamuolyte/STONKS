@@ -11,4 +11,6 @@ module com.example.stonks {
 
     opens com.example.stonks to javafx.fxml;
     exports com.example.stonks;
+    exports com.example.stonks.Controllers;
+    opens com.example.stonks.Controllers to javafx.fxml;
 }

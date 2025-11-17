@@ -5,15 +5,18 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stonks.HelloController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="580.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stonks.Controllers.HelloController">
    <children>
-      <Button fx:id="pradetiBT" layoutX="325.0" layoutY="206.0" mnemonicParsing="false" onAction="#pradetiBTon" prefHeight="31.0" prefWidth="203.0" text="PRADETI" />
-      <TextField fx:id="vardoField" layoutX="310.0" layoutY="174.0" prefHeight="26.0" prefWidth="233.0" promptText="Irasykite savo varda" />
-      <ImageView fitHeight="400.0" fitWidth="456.0" layoutX="-40.0" pickOnBounds="true" preserveRatio="true">
+      <TextField fx:id="vardoField" layoutX="390.0" layoutY="226.0" prefHeight="26.0" prefWidth="172.0" promptText="Irasykite savo varda" />
+      <Button fx:id="pradetiBT" layoutX="396.0" layoutY="259.0" mnemonicParsing="false" onAction="#pradetiBTon" prefHeight="31.0" prefWidth="157.0" text="PRADETI" />
+      <ImageView fitHeight="490.0" fitWidth="500.0" layoutX="-38.0" layoutY="46.0" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@Stonks.png" />
          </image>
       </ImageView>
+      <Text fill="#979393" layoutX="412.0" layoutY="540.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Darbą atliko: Nida Samuolytė" />
+      <Text fill="#979393" layoutX="454.0" layoutY="561.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2025, Vilnius" />
    </children>
 </Pane>

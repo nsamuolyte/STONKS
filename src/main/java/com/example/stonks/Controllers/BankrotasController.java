@@ -1,4 +1,4 @@
-package com.example.stonks;
+package com.example.stonks.Controllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.image.ImageView;
@@ -9,26 +9,28 @@ public class BankrotasController {
     @FXML
     private ImageView mouseImage;
 
-    private boolean restartChosen = false; // čia "true" reiškia tęsti, "false" – grįžti į meniu
+    private boolean restartChosen = false;
 
     @FXML
-    private void onYes() { // tęsti žaidimą
+    private void testiOn()
+    {
         restartChosen = true;
         close();
     }
 
     @FXML
-    private void onNo() { // grįžti į hello-view
+    private void bankrutuotiOn()
+    {
         restartChosen = false;
         close();
     }
 
-    private void close() {
+    private void close()
+    {
         Stage stage = (Stage) mouseImage.getScene().getWindow();
         stage.close();
     }
 
-    public boolean isRestartChosen() {
-        return restartChosen;
-    }
+    public boolean isRestartChosen() { return restartChosen; }
+
 }
