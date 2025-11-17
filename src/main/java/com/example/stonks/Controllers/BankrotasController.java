@@ -6,16 +6,15 @@ import javafx.stage.Stage;
 
 public class BankrotasController {
 
-    @FXML
-    private ImageView mouseImage;
+    @FXML private ImageView mouseImage;
 
-    private boolean restartChosen = false;       // Tęsti žaidimą
-    private boolean bankrutuotiChosen = false;   // Išeiti į meniu
+    private boolean restartChosen = false;
+    private boolean bankrutuotiChosen = false;
 
     @FXML
     private void testiOn()
     {
-        restartChosen = true;        // Tęsia žaidimą
+        restartChosen = true;
         bankrutuotiChosen = false;
         close();
     }
@@ -23,8 +22,8 @@ public class BankrotasController {
     @FXML
     private void bankrutuotiOn()
     {
-        restartChosen = false;       // Ne tęsia
-        bankrutuotiChosen = true;    // Pasirinko bankrutuoti
+        restartChosen = false;
+        bankrutuotiChosen = true;
         close();
     }
 
@@ -34,7 +33,6 @@ public class BankrotasController {
         stage.close();
     }
 
-    public boolean isRestartChosen() { return restartChosen; }
     public boolean isBankrutuotiChosen() { return bankrutuotiChosen; }
 
 }

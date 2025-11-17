@@ -1,5 +1,7 @@
 package com.example.stonks.Controllers;
 
+import com.example.stonks.model.ASSET;
+import com.example.stonks.model.ASSETfactory;
 import com.example.stonks.model.PLAYER;
 import com.example.stonks.model.STOCK;
 import javafx.beans.binding.Bindings;
@@ -24,7 +26,7 @@ public class GameController {
     @FXML private ComboBox<String> speedCB;
 
     private PLAYER player;
-    private STOCK stock = new STOCK("SLYVACOINAS", 100);
+    private ASSET stock = ASSETfactory.createStock("SLYVACOINAS", 100);
 
     private ChartController chart;
     private TradingController trading;
@@ -42,7 +44,8 @@ public class GameController {
         String name = playerNameLabel.getText().replace("Žaidėjas: ", "");
         player = new PLAYER(name, 1000);
 
-        chart.init(priceChart, xAxis, priceLabel, slider, stock);
+        chart.init(priceChart, xAxis, priceLabel, slider, stock); // 🟣 NEW
+
 
         saskaitaTXT.textProperty().bind(Bindings.format("%.2f €", player.balance));
         akcijosTXT.textProperty().bind(Bindings.format("%d", player.ownedStocks));
@@ -75,7 +78,7 @@ public class GameController {
         chart.play();
     }
 
-    private void afterTrade(boolean ok) {
+    public void afterTrade(boolean ok) {
         if (!ok || state.checkBankruptcy(player)) {
             chart.stop();
             state.showBankruptcyDialog(
