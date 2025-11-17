@@ -9,19 +9,22 @@ public class BankrotasController {
     @FXML
     private ImageView mouseImage;
 
-    private boolean restartChosen = false;
+    private boolean restartChosen = false;       // Tęsti žaidimą
+    private boolean bankrutuotiChosen = false;   // Išeiti į meniu
 
     @FXML
     private void testiOn()
     {
-        restartChosen = true;
+        restartChosen = true;        // Tęsia žaidimą
+        bankrutuotiChosen = false;
         close();
     }
 
     @FXML
     private void bankrutuotiOn()
     {
-        restartChosen = false;
+        restartChosen = false;       // Ne tęsia
+        bankrutuotiChosen = true;    // Pasirinko bankrutuoti
         close();
     }
 
@@ -32,5 +35,6 @@ public class BankrotasController {
     }
 
     public boolean isRestartChosen() { return restartChosen; }
+    public boolean isBankrutuotiChosen() { return bankrutuotiChosen; }
 
 }

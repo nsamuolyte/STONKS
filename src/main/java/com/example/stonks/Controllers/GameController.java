@@ -100,8 +100,21 @@ public class GameController {
 
 
     private void exitToMainMenu() {
-        System.out.println("TODO: perjungti į hello-view.fxml");
+        try {
+            javafx.stage.Stage stage = (javafx.stage.Stage) playerNameLabel.getScene().getWindow();
+
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                    getClass().getResource("/com/example/stonks/hello-view.fxml")
+            );
+
+            javafx.scene.Parent root = loader.load();
+            stage.setScene(new javafx.scene.Scene(root));
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
+
 
     public void setPlayerName(String name) {
         playerNameLabel.setText("Žaidėjas: " + name);

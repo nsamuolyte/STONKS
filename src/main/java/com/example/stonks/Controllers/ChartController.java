@@ -17,20 +17,16 @@ public class ChartController {
     private int speed = 1;
     private final XYChart.Series<Number, Number> series = new XYChart.Series<>();
 
-    private LineChart<Number, Number> chart;
+
     private NumberAxis xAxis;
     private Label priceLabel;
     private Slider slider;
     private STOCK stock;
 
-    public XYChart.Series<Number, Number> getSeries() {
-        return series;
-    }
 
     public void init(LineChart<Number, Number> chart, NumberAxis xAxis,  Label priceLabel, Slider slider, STOCK stock)
     {
         chart.setLegendVisible(false);
-        this.chart = chart;
         this.xAxis = xAxis;
         this.priceLabel = priceLabel;
         this.slider = slider;

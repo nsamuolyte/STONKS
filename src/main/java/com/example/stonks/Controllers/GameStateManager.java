@@ -1,6 +1,9 @@
 package com.example.stonks.Controllers;
 
+import com.example.stonks.HelloApplication;
 import com.example.stonks.model.PLAYER;
+import com.example.stonks.model.STOCK;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,7 +16,7 @@ public class GameStateManager {
         return player.getBalance() < 0 || player.getOwnedStocks() < 0;
     }
 
-    public void showBankruptcyDialog(Runnable restart, Runnable exit) {
+    public void showBankruptcyDialog(Runnable onContinue, Runnable onExit) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/stonks/bankrotas-view.fxml"));
             Parent root = loader.load();
@@ -25,11 +28,13 @@ public class GameStateManager {
             s.setTitle("Bankrotas");
             s.showAndWait();
 
-            if (ctrl.isRestartChosen()) restart.run();
-            else exit.run();
+            if (ctrl.isBankrutuotiChosen()) onExit.run();
+            else onContinue.run();
 
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
+
+
 }
