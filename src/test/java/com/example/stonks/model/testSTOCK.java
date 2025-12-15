@@ -11,7 +11,6 @@ public class testSTOCK
     @BeforeEach
     void setup() {
         stock = new STOCK("TEST", 100);
-        System.out.println("\n--- Naujas STOCK testas ---");
     }
 
     @Test

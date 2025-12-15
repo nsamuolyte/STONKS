@@ -18,7 +18,6 @@ public class ChartController implements AssetObserver {
     private Slider slider;
     private LineChart<Number, Number> chart;
 
-    // Išsaugoma kiekvieno asset atskira grafinė būsena
     public static class ChartState
     {
         public XYChart.Series<Number, Number> series = new XYChart.Series<>();
@@ -27,7 +26,6 @@ public class ChartController implements AssetObserver {
 
     private ChartState state;
 
-    // Ar grafikas turėtų auto-scroll’inti?
     private boolean autoScroll = true;
 
     public void init(LineChart<Number, Number> chart,  NumberAxis xAxis, Label priceLabel,

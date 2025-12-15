@@ -4,7 +4,6 @@ public class ASSETfactory {
 
     //Factory Method
     public static ASSET createStock(String name, double price) { return new STOCK(name, price); }
-    //Behavioural pattern – Strategy
     public static ASSET createCommodity(String name, double price) { return new COMMODITY(name, price);}
 
     public static ASSET createAsset(String type, String name, double price)

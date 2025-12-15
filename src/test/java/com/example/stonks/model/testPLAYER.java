@@ -19,7 +19,6 @@ class testPLAYER {
     void setup() {
         player = new PLAYER("Test", 1000);
         asset = new STOCK("TEST", 100);
-        System.out.println("\n--- Naujas PLAYER testas ---");
     }
 
     @Test
