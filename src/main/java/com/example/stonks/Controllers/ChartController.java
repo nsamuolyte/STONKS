@@ -1,52 +1,61 @@
 package com.example.stonks.Controllers;
 
 import com.example.stonks.model.ASSET;
-import com.example.stonks.model.STOCK;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import com.example.stonks.model.AssetObserver;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
-import javafx.util.Duration;
 
-public class ChartController
-{
+import static com.example.stonks.util.Constants.AXIS_WINDOW;
+import static com.example.stonks.util.Constants.SLIDER_OFFSET;
 
-    private static final int AXIS_WINDOW = 20;        // vietoj 20
-    private static final int SLIDER_OFFSET = 50;      // vietoj 50
-
-    private Timeline timeline;
-    private int time = 0;
-    private int speed = 1;
-    private boolean autoScroll = true;
-
-    private final XYChart.Series<Number, Number> series = new XYChart.Series<>();
+public class ChartController implements AssetObserver {
 
     private NumberAxis xAxis;
     private Label priceLabel;
     private Slider slider;
-    private ASSET asset;
+    private LineChart<Number, Number> chart;
 
-    public void init(LineChart<Number, Number> chart, NumberAxis xAxis,
-                     Label priceLabel, Slider slider, ASSET stock)
+    // Išsaugoma kiekvieno asset atskira grafinė būsena
+    public static class ChartState
     {
+        public XYChart.Series<Number, Number> series = new XYChart.Series<>();
+        public int time = 0;
+    }
+
+    private ChartState state;
+
+    // Ar grafikas turėtų auto-scroll’inti?
+    private boolean autoScroll = true;
+
+    public void init(LineChart<Number, Number> chart,  NumberAxis xAxis, Label priceLabel,
+                     Slider slider, ASSET asset, ChartState existingState)
+    {
+        this.chart = chart;
         this.xAxis = xAxis;
         this.priceLabel = priceLabel;
         this.slider = slider;
-        this.asset = stock;
 
-        setupChart(chart);
+        if (existingState == null) {
+            this.state = new ChartState();
+        } else {
+            this.state = existingState;
+        }
+
+        asset.addObserver(this); //-> observer
+
+        setupChart();
         setupAxis();
         setupSlider();
-
-        startTimeline();
+        restoreState();
     }
 
-    private void setupChart(LineChart<Number, Number> chart) {
+    private void setupChart() {
         chart.setLegendVisible(false);
-        chart.getData().add(series);
+        chart.getData().clear();
+        chart.getData().add(state.series);
     }
 
     private void setupAxis() {
@@ -55,77 +64,53 @@ public class ChartController
         xAxis.setUpperBound(AXIS_WINDOW);
     }
 
-    private void setupSlider()
-    {
+    private void setupSlider() {
         slider.valueProperty().addListener((obs, oldV, newV) -> {
             if (slider.isValueChanging()) {
                 autoScroll = false;
                 double v = newV.doubleValue();
                 xAxis.setLowerBound(Math.max(0, v - SLIDER_OFFSET));
                 xAxis.setUpperBound(v);
-            }
-
+            } else {
                 autoScroll = true;
+            }
         });
     }
 
-    private void startTimeline() {
-        timeline = new Timeline(new KeyFrame(Duration.seconds(speed), e -> updateChart()));
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.play();
+    private void restoreState() {
+        if (state.time > AXIS_WINDOW) {
+            xAxis.setLowerBound(state.time - AXIS_WINDOW);
+            xAxis.setUpperBound(state.time);
+        }
+
+        slider.setMax(state.time);
+        slider.setValue(state.time);
     }
 
-    public void setSpeed(int seconds) {
-        this.speed = seconds;
-        stop();
-        startTimeline();
-    }
+    @Override
+    public void onPriceUpdated(ASSET asset, double newPrice, int time) {
+        state.time = time;
 
-    public void updateChart() {
-        asset.updatePrice();
-        time++;
+        state.series.getData().add(new XYChart.Data<>(time, newPrice));
+        priceLabel.setText(String.format("Kaina: %.2f €", newPrice));
 
-        double price = asset.getPrice();
-        series.getData().add(new XYChart.Data<>(time, price));
-        priceLabel.setText(String.format("Kaina: %.2f €", price));
+        slider.setMax(time);
+
+        if (autoScroll) {
+            slider.setValue(time);
+        }
 
         updateAxis();
-        updateSlider();
     }
 
     private void updateAxis() {
-        if (time > AXIS_WINDOW) {
-            xAxis.setLowerBound(time - AXIS_WINDOW);
-            xAxis.setUpperBound(time);
+        if (state.time > AXIS_WINDOW) {
+            xAxis.setLowerBound(state.time - AXIS_WINDOW);
+            xAxis.setUpperBound(state.time);
         }
     }
 
-    private void updateSlider() {
-        slider.setMax(time);
-
-        if (autoScroll)
-        {
-            slider.setValue(time);
-
-            xAxis.setLowerBound(Math.max(0, time - AXIS_WINDOW));
-            xAxis.setUpperBound(time);
-        }
-    }
-
-    public void stop() {
-        if (timeline != null) timeline.stop();
-    }
-
-    public void play() {
-        if (timeline != null) timeline.play();
-    }
-
-    public void resetChart(ASSET newStock) {
-        this.asset = newStock;
-        time = 0;
-        series.getData().clear();
-
-        stop();
-        startTimeline();
+    public ChartState getState() {
+        return state;
     }
 }

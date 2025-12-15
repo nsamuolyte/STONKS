@@ -2,25 +2,23 @@ package com.example.stonks.Controllers;
 
 import com.example.stonks.model.ASSET;
 import com.example.stonks.model.PLAYER;
-import com.example.stonks.model.STOCK;
 import javafx.scene.control.TextInputDialog;
 
 import java.util.Optional;
 
+import static com.example.stonks.util.Constants.COMMISSION_PERCENT;
+
 public class TradingController {
 
-    private static final double COMMISSION = 0.02; // konstanta vietoj magic number
-
-    public boolean showBuyDialog(PLAYER player, ASSET stock) {
-        return showTradeDialog("Pirkti akcijas", "Įveskite kiek pirkti:", player, stock, true);
+    public boolean showBuyDialog(PLAYER player, ASSET asset) {
+        return showTradeDialog("Pirkti akcijas", "Įveskite kiek pirkti:", player, asset, true);
     }
 
-    public boolean showSellDialog(PLAYER player, ASSET stock) {
-        return showTradeDialog("Parduoti akcijas", "Įveskite kiek parduoti:", player, stock, false);
+    public boolean showSellDialog(PLAYER player, ASSET asset) {
+        return showTradeDialog("Parduoti akcijas", "Įveskite kiek parduoti:", player, asset, false);
     }
 
-    // 🟣 FIXED: pakeista STOCK → ASSET
-    private boolean showTradeDialog(String title, String header, PLAYER player, ASSET stock, boolean buying) {
+    private boolean showTradeDialog(String title, String header, PLAYER player, ASSET asset, boolean buying) {
         TextInputDialog dialog = new TextInputDialog();
         dialog.setTitle(title);
         dialog.setHeaderText(header);
@@ -32,12 +30,11 @@ public class TradingController {
         try {
             int amount = Integer.parseInt(r.get());
             return buying
-                    ? player.buyStock(stock, amount, COMMISSION)
-                    : player.sellStock(stock, amount, COMMISSION);
+                    ? player.buyStock(asset, amount, COMMISSION_PERCENT)
+                    : player.sellStock(asset, amount, COMMISSION_PERCENT);
 
         } catch (Exception e) {
             return true;
         }
     }
 }
-

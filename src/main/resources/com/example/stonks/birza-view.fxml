@@ -68,7 +68,7 @@
             <Text layoutX="353.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Turimos akcijos:" />
 
             <Text fx:id="akcijosTXT" layoutX="445.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="-" wrappingWidth="107.57099203943153" />
-      
+
              <Label fx:id="playerNameLabel" layoutX="38.0" layoutY="13.0" text="Žaidėjas: " />
              <Label fx:id="priceLabel" layoutX="40.0" layoutY="33.0" text="Kaina:" />
             <ImageView fitHeight="99.0" fitWidth="68.0" layoutX="-20.0" layoutY="-8.0" pickOnBounds="true" preserveRatio="true">
@@ -76,6 +76,7 @@
                   <Image url="@Stox%20man.png" />
                </image>
             </ImageView>
+            <ComboBox fx:id="assetTypeCB" layoutX="160.0" layoutY="28.0" prefWidth="150.0" />
          </children>
       </AnchorPane>
 

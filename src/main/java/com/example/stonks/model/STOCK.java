@@ -1,17 +1,11 @@
 package com.example.stonks.model;
 
-import java.util.Random;
+import com.example.stonks.util.RandomVolatileStrategy;
 
-public class STOCK extends ASSET implements PriceUpdate {
+public class STOCK extends ASSET  { // 1.1 Paveldi is ASSET
 
-    private final Random random = new Random();
-
-    public STOCK(String name, double price) { super(name, price); }
-    @Override
-    public void updatePrice()
-    {
-        double change = (random.nextDouble() * 10) - 5;
-        price = Math.max(1, price + change);
+    public STOCK(String name, double price) {
+        super(name, price, new RandomVolatileStrategy());
     }
 }
 
